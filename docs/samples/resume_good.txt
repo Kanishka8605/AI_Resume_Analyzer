@@ -1,0 +1,39 @@
+JOHN DOE
+john.doe@email.com | (123) 456-7890 | San Francisco, CA
+github.com/johndoe | linkedin.com/in/johndoe
+
+SUMMARY
+Result-oriented Frontend Developer with 4+ years of professional experience building high-performance web applications. Specialized in React.js, modern JavaScript/TypeScript, and state management. Passionate about optimization, responsive design, and collaborating with cross-functional teams to deliver scalable user interfaces.
+
+EXPERIENCE
+Senior Frontend Engineer | TechCorp Inc.
+June 2022 - Present
+- Designed and built a new customer dashboard using React, TypeScript, and Tailwind CSS, increasing page load speed by 35%.
+- Led transition of client-side state management from custom context to Redux Toolkit, decreasing codebase size by 15% and fixing 20+ latency bugs.
+- Mentored 3 junior developers on frontend best practices and established unit testing standards with Jest, achieving 85% code coverage.
+- Partnered with product and UI/UX design teams to implement accessible component designs conforming to WCAG AA guidelines.
+
+Software Developer | AppSolutions Co.
+May 2020 - June 2022
+- Maintained and expanded a client-facing SaaS application using Vue.js and Node.js, supporting 50k+ daily active users.
+- Developed REST APIs and integrated them with frontend forms, reducing user sign-up drop-offs by 18%.
+- Optimized database SQL queries in PostgreSQL, cutting server response times from 400ms to 180ms.
+
+PROJECTS
+Personal Portfolio & UI Kit (React, Tailwind CSS, Vite)
+- Created a library of 15+ customizable, responsive UI components.
+- Integrated automated build pipelines using GitHub Actions for CI/CD deployments.
+
+Task Manager App (Node.js, Express, MongoDB, React)
+- Built a full-stack collaborative kanban board with real-time web-sockets.
+- Implemented OAuth2 user authentication and JWT session management.
+
+EDUCATION
+Bachelor of Science in Computer Science
+State University | 2016 - 2020
+
+SKILLS
+- Languages: JavaScript, TypeScript, HTML, CSS, SQL, Python
+- Frameworks/Libraries: React.js, Next.js, Redux Toolkit, Vue.js, Express.js
+- Tools/DevOps: Git, Docker, Webpack, Vite, Jest, PostgreSQL, Tailwind CSS
+- Methodologies: Agile, Scrum, CI/CD, Responsive Design, WCAG Accessibility

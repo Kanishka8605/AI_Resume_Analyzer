@@ -1,0 +1,17 @@
+My Resume
+Bob Smith
+
+I am looking for a developer job. I know how to code.
+
+Jobs:
+- Worked at a shop doing web pages.
+- Fixed bugs on the server.
+- Did some HTML stuff.
+
+Stuff I know:
+- Computers
+- Coding
+- HTML
+- Javascript
+
+Call me at 555-1234
