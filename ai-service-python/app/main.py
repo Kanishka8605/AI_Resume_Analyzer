@@ -109,8 +109,14 @@ def analyze_resume(request: AnalyzeRequest):
         # 3. Calculate Rule-based ATS Score
         ats_score, score_breakdown = calculate_ats_score(resume_text, sections_data, keyword_score)
         
-        # 4. Invoke LLM for qualitative evaluation
-        llm_result = llm_client.analyze_resume(resume_text, target_role)
+        # 4. Invoke LLM for qualitative evaluation (with safe fallback)
+        try:
+            llm_result = llm_client.analyze_resume(resume_text, target_role)
+            if not isinstance(llm_result, dict):
+                llm_result = llm_client._generate_mock_analysis(resume_text, target_role)
+        except Exception as llm_err:
+            logger.warning(f"LLM analysis failed: {str(llm_err)}. Using mock heuristic engine.")
+            llm_result = llm_client._generate_mock_analysis(resume_text, target_role)
         
         # 5. Merge Quantitative and Qualitative elements
         # Combine ATS score (40%) and LLM qualitative score (60%) for overall score
@@ -120,7 +126,9 @@ def analyze_resume(request: AnalyzeRequest):
         
         # Union missing keywords
         llm_missing = llm_result.get("missingKeywords", [])
-        union_missing = list(set([kw.strip() for kw in (llm_missing + missing_rule_kws) if kw.strip()]))
+        if not isinstance(llm_missing, list):
+            llm_missing = []
+        union_missing = list(set([str(kw).strip() for kw in (llm_missing + missing_rule_kws) if str(kw).strip()]))
         
         # Filter union keywords to cap at 10 items for dashboard readability
         union_missing = sorted(union_missing, key=len)[:10]
@@ -128,15 +136,16 @@ def analyze_resume(request: AnalyzeRequest):
         # Gather recommendations
         final_recommendations = []
         llm_recs = llm_result.get("recommendations", [])
-        
-        for item in llm_recs:
-            final_recommendations.append(
-                RecommendationItem(
-                    category=item.get("category", "Keywords"),
-                    severity=item.get("severity", "warning"),
-                    message=item.get("message", "")
-                )
-            )
+        if isinstance(llm_recs, list):
+            for item in llm_recs:
+                if isinstance(item, dict):
+                    final_recommendations.append(
+                        RecommendationItem(
+                            category=str(item.get("category", "Keywords")),
+                            severity=str(item.get("severity", "warning")),
+                            message=str(item.get("message", ""))
+                        )
+                    )
             
         # Add automatic recommendations for missing critical sections if not covered
         sections_map = {s["name"]: s["present"] for s in sections_data}
@@ -168,12 +177,20 @@ def analyze_resume(request: AnalyzeRequest):
             ) for s in sections_data
         ]
 
+        strengths = llm_result.get("strengths", ["Standard structure present."])
+        if not isinstance(strengths, list):
+            strengths = ["Standard structure present."]
+
+        weaknesses = llm_result.get("weaknesses", ["Some details could be quantified."])
+        if not isinstance(weaknesses, list):
+            weaknesses = ["Some details could be quantified."]
+
         return AnalysisResponse(
             overallScore=overall_score,
             atsScore=ats_score,
             sections=section_scores,
-            strengths=llm_result.get("strengths", ["Standard structure present."]),
-            weaknesses=llm_result.get("weaknesses", ["Some details could be quantified."]),
+            strengths=strengths,
+            weaknesses=weaknesses,
             missingKeywords=union_missing,
             recommendations=final_recommendations
         )
@@ -181,3 +198,4 @@ def analyze_resume(request: AnalyzeRequest):
     except Exception as e:
         logger.error(f"Analysis pipeline failure: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Resume analysis failed: {str(e)}")
+
