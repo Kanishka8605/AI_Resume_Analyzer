@@ -30,3 +30,18 @@ class AnalysisResponse(BaseModel):
     weaknesses: List[str] = Field(..., description="Identified weaknesses or gaps in the resume")
     missingKeywords: List[str] = Field(..., description="Crucial missing keywords or skills based on target role")
     recommendations: List[RecommendationItem] = Field(..., description="Actionable improvement suggestions grouped by category and severity")
+
+class ChatMessage(BaseModel):
+    role: str = Field(..., description="user or assistant")
+    content: str = Field(..., description="Message text content")
+
+class ChatRequest(BaseModel):
+    resumeText: str = Field(..., description="Full raw resume text context")
+    targetRole: Optional[str] = Field("", description="Target job title context")
+    messages: Optional[List[ChatMessage]] = Field(default=[], description="Previous conversation turn history")
+    userMessage: str = Field(..., description="The user's latest query or instruction")
+
+class ChatResponse(BaseModel):
+    reply: str = Field(..., description="AI bot's tailored response text")
+    suggestedFollowups: List[str] = Field(default=[], description="Dynamic followup prompt suggestions")
+

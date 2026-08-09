@@ -22,6 +22,20 @@ app.use((req, res, next) => {
 // API Routes
 app.use('/api/resume', resumeRoutes);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    message: 'AI Resume Analyzer API Gateway',
+    endpoints: {
+      health: '/health',
+      resumeUpload: '/api/resume/upload',
+      resumeAnalyze: '/api/resume/analyze',
+      history: '/api/resume/history'
+    }
+  });
+});
+
 // Healthy check route
 app.get('/health', (req, res) => {
   const { isFallback } = require('./config/db');
@@ -31,6 +45,7 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
 
 // Catch-all route handler for 404s
 app.use((req, res, next) => {

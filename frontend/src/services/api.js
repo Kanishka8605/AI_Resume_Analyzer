@@ -59,6 +59,23 @@ export const apiService = {
   getAnalysisById: async (id) => {
     const response = await apiClient.get(`/resume/analysis/${id}`);
     return response.data;
+  },
+
+  /**
+   * Sends user query to AI Chatbot with resume text and target role context
+   * @param {string} resumeText 
+   * @param {string} targetRole 
+   * @param {Array} messages 
+   * @param {string} userMessage 
+   */
+  chatWithBot: async (resumeText, targetRole, messages, userMessage) => {
+    const response = await apiClient.post('/resume/chat', {
+      resumeText,
+      targetRole,
+      messages,
+      userMessage
+    });
+    return response.data;
   }
 };
 

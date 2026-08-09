@@ -15,4 +15,8 @@ router.get('/history', resumeController.getHistory);
 // 4. Get specific analysis record details
 router.get('/analysis/:id', resumeController.getAnalysisById);
 
+// 5. Interactive AI Chatbot Endpoint
+router.post('/chat', resumeController.chatWithBot);
+
 module.exports = router;
+

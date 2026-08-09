@@ -115,7 +115,33 @@ const resumeController = {
     } catch (error) {
       next(error);
     }
+  },
+
+  chatWithBot: async (req, res, next) => {
+    try {
+      const { resumeText, targetRole, messages, userMessage } = req.body;
+      if (!resumeText || !resumeText.trim()) {
+        return res.status(400).json({ success: false, error: 'Resume text is required.' });
+      }
+      if (!userMessage || !userMessage.trim()) {
+        return res.status(400).json({ success: false, error: 'User message is required.' });
+      }
+
+      console.log(`💬 Processing AI Bot chat query: "${userMessage}" for target role: "${targetRole || 'General'}"`);
+
+      const chatResponse = await pythonService.chatWithResume(resumeText, targetRole, messages, userMessage);
+
+      res.status(200).json({
+        success: true,
+        data: chatResponse
+      });
+
+    } catch (error) {
+      console.error('❌ Chat handler failed:', error.message);
+      next(error);
+    }
   }
 };
 
 module.exports = resumeController;
+

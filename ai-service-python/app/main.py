@@ -6,7 +6,10 @@ from dotenv import load_dotenv
 # Load env variables before other imports
 load_dotenv()
 
-from app.models.schemas import ParseResponse, AnalyzeRequest, AnalysisResponse, SectionScore, RecommendationItem
+from app.models.schemas import (
+    ParseResponse, AnalyzeRequest, AnalysisResponse, SectionScore,
+    RecommendationItem, ChatRequest, ChatResponse
+)
 from app.parsers.pdf_parser import parse_pdf
 from app.parsers.docx_parser import parse_docx
 from app.parsers.txt_parser import parse_txt
@@ -198,4 +201,31 @@ def analyze_resume(request: AnalyzeRequest):
     except Exception as e:
         logger.error(f"Analysis pipeline failure: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Resume analysis failed: {str(e)}")
+
+@app.post("/chat", response_model=ChatResponse)
+def chat_with_bot(request: ChatRequest):
+    """
+    Interactive AI Resume Assistant Chatbot endpoint.
+    Answers candidate queries with context of resume text and target role.
+    """
+    if not request.resumeText.strip():
+        raise HTTPException(status_code=400, detail="Resume text is required for AI chat assistance.")
+    
+    try:
+        messages_dicts = [m.dict() for m in request.messages] if request.messages else []
+        chat_result = llm_client.chat_with_resume(
+            resume_text=request.resumeText,
+            target_role=request.targetRole or "",
+            messages=messages_dicts,
+            user_message=request.userMessage
+        )
+        
+        return ChatResponse(
+            reply=chat_result.get("reply", "I'm here to help you optimize your resume!"),
+            suggestedFollowups=chat_result.get("suggestedFollowups", [])
+        )
+    except Exception as e:
+        logger.error(f"AI chat pipeline failure: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AI chat failed: {str(e)}")
+
 

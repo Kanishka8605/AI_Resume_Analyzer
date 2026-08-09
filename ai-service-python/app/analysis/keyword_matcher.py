@@ -16,19 +16,61 @@ ROLE_KEYWORDS = {
         "react", "javascript", "typescript", "node", "express", "html", "css", "sql", "postgresql",
         "mongodb", "api", "git", "aws", "docker", "next.js", "rest api", "graphql", "databases"
     ],
+    "mobile": [
+        "react native", "flutter", "swift", "kotlin", "android", "ios", "xcode", "mobile app",
+        "dart", "firebase", "sqlite", "rest api", "push notifications", "state management"
+    ],
     "data science": [
         "python", "sql", "machine learning", "deep learning", "nlp", "pandas", "numpy",
         "scikit-learn", "tensorflow", "pytorch", "tableau", "power bi", "data visualization",
         "statistics", "data modeling", "big data", "spark", "r programming", "data analysis"
     ],
+    "data analyst": [
+        "sql", "excel", "tableau", "power bi", "python", "r", "data cleaning", "statistics",
+        "dashboards", "business intelligence", "etl", "kpi", "reporting", "data visualization"
+    ],
+    "machine learning": [
+        "python", "pytorch", "tensorflow", "scikit-learn", "deep learning", "neural networks",
+        "computer vision", "nlp", "llm", "transformers", "hugging face", "model deployment",
+        "mlops", "feature engineering", "data pipelines"
+    ],
     "devops": [
         "docker", "kubernetes", "jenkins", "git", "ci/cd", "terraform", "ansible", "aws",
         "azure", "gcp", "linux", "bash", "shell scripting", "prometheus", "grafana", "nginx"
+    ],
+    "cloud engineer": [
+        "aws", "azure", "gcp", "terraform", "cloudformation", "iam", "s3", "ec2", "vpc",
+        "serverless", "lambda", "cloud security", "networking", "ci/cd", "containerization"
+    ],
+    "cybersecurity": [
+        "penetration testing", "vulnerability assessment", "siem", "firewall", "network security",
+        "soc", "incident response", "wireshark", "python", "compliance", "cissp", "cryptography",
+        "identity access management", "ethical hacking"
     ],
     "product manager": [
         "product roadmap", "agile", "scrum", "user stories", "product strategy", "sql",
         "kpi", "metrics", "analytics", "market research", "stakeholder management", "jira",
         "wireframing", "ab testing", "cross-functional"
+    ],
+    "ui/ux": [
+        "figma", "sketch", "adobe xd", "user research", "wireframing", "prototyping",
+        "user flows", "design systems", "usability testing", "ui design", "ux research", "interaction design"
+    ],
+    "qa tester": [
+        "automation testing", "selenium", "cypress", "playwright", "jest", "postman",
+        "test cases", "qa", "regression testing", "api testing", "jira", "bug tracking", "agile"
+    ],
+    "embedded systems": [
+        "c", "c++", "microcontrollers", "rtos", "embedded linux", "arm", "stm32",
+        "firmware", "i2c", "spi", "uart", "pcb", "debugging", "hardware"
+    ],
+    "database administrator": [
+        "sql", "postgresql", "mysql", "oracle", "sql server", "database optimization",
+        "indexing", "backup recovery", "replication", "performance tuning", "nosql", "mongodb"
+    ],
+    "scrum master": [
+        "scrum", "agile", "jira", "kanban", "sprint planning", "retrospectives",
+        "facilitation", "coaching", "servant leadership", "team velocity"
     ]
 }
 
@@ -61,26 +103,32 @@ def match_keywords(text: str, target_role: str = "") -> Tuple[float, List[str], 
                 matched = True
                 break
         
-        # If no direct match, check if we can match broad synonyms
+        # If no direct match, check synonyms and keyword hits
         if not matched:
-            if any(w in role_normalized for w in ["react", "vue", "angular", "css", "web"]):
+            if any(w in role_normalized for w in ["react", "vue", "angular", "css", "web", "frontend"]):
                 keywords_to_check = ROLE_KEYWORDS["frontend"]
-                selected_role = "frontend"
-            elif any(w in role_normalized for w in ["database", "node", "django", "java", "spring", "c#", "server"]):
+            elif any(w in role_normalized for w in ["node", "django", "flask", "java", "spring", "c#", "backend", "api"]):
                 keywords_to_check = ROLE_KEYWORDS["backend"]
-                selected_role = "backend"
-            elif any(w in role_normalized for w in ["full-stack", "full stack"]):
+            elif any(w in role_normalized for w in ["full-stack", "fullstack", "software engineer", "developer"]):
                 keywords_to_check = ROLE_KEYWORDS["fullstack"]
-                selected_role = "fullstack"
-            elif any(w in role_normalized for w in ["data", "ml", "ai", "model", "analysis"]):
-                keywords_to_check = ROLE_KEYWORDS["data science"]
-                selected_role = "data science"
-            elif any(w in role_normalized for w in ["devops", "cloud", "aws", "azure", "docker", "pipeline"]):
+            elif any(w in role_normalized for w in ["mobile", "android", "ios", "flutter", "react native"]):
+                keywords_to_check = ROLE_KEYWORDS["mobile"]
+            elif any(w in role_normalized for w in ["data science", "machine learning", "ml", "ai"]):
+                keywords_to_check = ROLE_KEYWORDS["machine learning"]
+            elif any(w in role_normalized for w in ["data analyst", "analytics", "business intelligence"]):
+                keywords_to_check = ROLE_KEYWORDS["data analyst"]
+            elif any(w in role_normalized for w in ["devops", "sre", "infrastructure"]):
                 keywords_to_check = ROLE_KEYWORDS["devops"]
-                selected_role = "devops"
-            elif any(w in role_normalized for w in ["product", "project", "scrum", "agile", "manager"]):
+            elif any(w in role_normalized for w in ["cloud", "aws", "azure", "gcp"]):
+                keywords_to_check = ROLE_KEYWORDS["cloud engineer"]
+            elif any(w in role_normalized for w in ["cyber", "security", "soc"]):
+                keywords_to_check = ROLE_KEYWORDS["cybersecurity"]
+            elif any(w in role_normalized for w in ["ui", "ux", "design", "figma"]):
+                keywords_to_check = ROLE_KEYWORDS["ui/ux"]
+            elif any(w in role_normalized for w in ["qa", "test", "quality"]):
+                keywords_to_check = ROLE_KEYWORDS["qa tester"]
+            elif any(w in role_normalized for w in ["product", "scrum", "agile"]):
                 keywords_to_check = ROLE_KEYWORDS["product manager"]
-                selected_role = "product manager"
                 
     # Fallback to generic keywords if no role is matched or provided
     if not keywords_to_check:
