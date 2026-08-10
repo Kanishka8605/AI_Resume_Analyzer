@@ -24,7 +24,7 @@ const ProgressBar = ({ value, label, size = 160, strokeWidth = 14 }) => {
   return (
     <div className="flex flex-col items-center justify-center space-y-2">
       <div className="relative" style={{ width: size, height: size }}>
-        <svg className="w-full h-full transform -rotate-95" viewBox={`0 0 ${size} ${size}`}>
+        <svg className={`w-full h-full transform -rotate-95 ${colorClass}`} viewBox={`0 0 ${size} ${size}`}>
           {/* Gradients */}
           <defs>
             <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Bot, FileText, CheckCircle2, ShieldAlert, BookOpen } from 'lucide-react';
+import { Bot, CheckCircle2, BookOpen } from 'lucide-react';
 
 const About = () => {
   return (

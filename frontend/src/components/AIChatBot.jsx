@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, Send, User, Sparkles, Copy, Check, RefreshCw, MessageSquare, CornerDownLeft } from 'lucide-react';
+import { Bot, Send, User, Sparkles, Copy, Check, RefreshCw, MessageSquare } from 'lucide-react';
 import { apiService } from '../services/api';
 
 const AIChatBot = ({ resumeText, targetRole }) => {

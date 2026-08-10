@@ -15,19 +15,21 @@ const History = () => {
       try {
         await fetchHistory();
       } catch (err) {
+        console.error('History fetch error:', err);
         setLocalError('Failed to load past analyses history.');
       } finally {
         setFetching(false);
       }
     };
     fetchInit();
-  }, []);
+  }, [fetchHistory]);
 
   const handleSelectRecord = async (id) => {
     try {
       await loadAnalysis(id);
       navigate('/dashboard');
     } catch (err) {
+      console.error('Record select error:', err);
       setLocalError('Could not load details for that analysis record.');
     }
   };
